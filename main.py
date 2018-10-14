@@ -1,5 +1,6 @@
 import _mysql
 import tkinter as tk
+from PIL import ImageTk, Image
 
 # connect to db
 db= _mysql.connect(host="localhost",user="root",passwd="ArkAngel",db="EVENTS")
@@ -7,7 +8,7 @@ db= _mysql.connect(host="localhost",user="root",passwd="ArkAngel",db="EVENTS")
 
 class Page(tk.Frame):
     def __init__(self, *args, **kwargs):
-        tk.Frame.__init__(self, *args, **kwargs)
+        tk.Frame.__init__(self, background="white", *args, **kwargs)
     def show(self):
         self.lift()
 
@@ -27,13 +28,19 @@ class Page1(Page):
         placeLbl = []
         btns = []
         for i,event in enumerate(events):
-            eventLbl.append(tk.Label(self, text=event['Name']))
+            eventLbl.append(tk.Label(self, background="white", text=event['Name'],font=("Helvetica", 16)))
             eventLbl[i].grid(column=10, row=i)
-            placeLbl.append(tk.Label(self, text=event['PlaceName']))
+            placeLbl.append(tk.Label(self, background="white", text=event['PlaceName']))
             placeLbl[i].grid(column=11, row=i)
             e = event['EventId']
-            btns.append(tk.Button(self, text="Info", command=lambda e=e: self.go_to_page(e) ))
+            btns.append(tk.Button(self, background="white", text="Info", command=lambda e=e: self.go_to_page(e) ))
             btns[i].grid(column=12, row=i)
+
+        image = Image.open('map.png')
+        photo = ImageTk.PhotoImage(image)
+        img = tk.Label(self,image=photo)
+        img.image = photo
+        img.grid(column=1,row=20, columnspan = 20)
 
     def go_to_page(self, EventId): 
         self.controller.EventId = EventId
@@ -45,11 +52,18 @@ class Page2(Page):
         self.controller = controller
         Page.__init__(self, *args, **kwargs)
         talkLbl= []
-
-        backButton = tk.Button(self, text="Back", command=lambda: controller.showFrame(0) )
+        eventNamelbl = tk.Label()
+        backButton = tk.Button(self, background="white", text="Back", command=lambda: controller.showFrame(0) )
         backButton.grid(column=1, row=10)
 
     def putData(self):
+        query = 'select * from Event where EventId = ' + self.controller.EventId 
+        db.query(query)
+        r = db.store_result()
+        event = list(r.fetch_row(maxrows=0,how=1))
+        self.eventNamelbl = tk.Label(self,font=("Helvetica", 16),background="white", text=('      '+event[0]['Name'].decode()+'     '))
+        self.eventNamelbl.grid(column = 0, row = 1)
+
         query = 'select * from Speaker NATURAL JOIN Talk where EventId = ' + self.controller.EventId 
         db.query(query)
         r = db.store_result()
@@ -57,7 +71,7 @@ class Page2(Page):
 
         self.talkLbl = []
         for i,talk in enumerate(talks):
-            self.talkLbl.append(tk.Label(self, text=talk['Title']))
+            self.talkLbl.append(tk.Label(self,background="white", text=' '+talk['Title'].decode()+' '))
             self.talkLbl[i].grid(column=10, row=i)
 
 class Page3(Page):
@@ -88,8 +102,15 @@ class MainView(tk.Frame):
         self.frames[c].tkraise()
 
 if __name__ == "__main__":
+    
     root = tk.Tk()
+
+    menubar = tk.Menu(root)
+    menubar.add_command(label='Welcome to XYZ Conference')
+    root.config(menu=menubar)
+    
     main = MainView(root)
     main.pack(side="top", fill="both", expand=True)
-    root.wm_geometry("400x400")
+    root.wm_geometry("630x460")
+    root.title('Conference Information App')
     root.mainloop()
