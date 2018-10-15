@@ -44,10 +44,14 @@ CREATE TABLE Talk (
     CONSTRAINT fk4 FOREIGN KEY(SpeakerId) REFERENCES Speaker(SpeakerId)
 );
 
-INSERT INTO Incharge values(1,'ABC',123),(2,'ABCDE',141423),(3,'ASda',17823),(4,'ATW',111423),(5,'PWE',5163);
+INSERT INTO Incharge values(1,'Sam',9732712213),(2,'Sarah',1414231123),(3,'John',1782323456),(4,'Alice',1119876423),(5,'Alex',5109327663);
+
 
 INSERT INTO Location values(1,'Seminar Hall 1'),(2,'Seminar Hall 2'),(3,'Room 001'),(4,'Room 002'),(5,'Room 003');
 
-INSERT INTO Speaker values(1,'QWERTY'),(2,'QWQWRTY'),(3,'QASDY'),(4,'QWRQWRY'),(5,'QWqrqrY'),(6,'asdasdTY'),(7,'QhyjTY'),(8,'cmancmY');
+INSERT INTO Speaker values(1,'Dr. Shyam'),(2,'Mr. Rohan'),(3,'Dr. Paul'),(4,'Mrs. Walker'),(5,'Dr. Shetty'),(6,'Mr. Chetan'),(7,'Mrs. Amanda'),(8,'Mr. Ramesh');
 
-INSERT INTO Event values(1,'TedX',1,'2018-10-11 10:06:59',1),(2,'Ingenius',2,'2018-10-11 10:06:59',2),(3,'Kalpana',3,'2018-10-11 10:06:59',1),(4,'Maaya',3,'2018-10-11 10:06:59',2);
+INSERT INTO Sponsor values(1,'TechSpecs','Platinum'),(2,'JetWorks','Silver'),(3.'Horizon','Gold');
+
+INSERT INTO Event values(INSERT INTO `Event` VALUES (1,'TedX',3,'2019-01-22 10:00:00',2),(2,'Ingenius',1,'2018-10-30 08:30:00',4),(3,'Kalpana',1,'2019-02-15 09:00:00',1),(4,'Maaya',2,'2018-11-11 10:00:00',5);
+
