@@ -50,7 +50,7 @@ CREATE TABLE `Event` (
 
 LOCK TABLES `Event` WRITE;
 /*!40000 ALTER TABLE `Event` DISABLE KEYS */;
-INSERT INTO `Event` VALUES (1,'TedX',1,'2018-10-11 10:06:59',1),(2,'Ingenius',2,'2018-10-11 10:06:59',2),(3,'Kalpana',3,'2018-10-11 10:06:59',1),(4,'Maaya',3,'2018-10-11 10:06:59',2);
+INSERT INTO `Event` VALUES (1,'TedX',3,'2019-01-22 10:00:00',2),(2,'Ingenius',1,'2018-10-30 08:30:00',4),(3,'Kalpana',1,'2019-02-15 09:00:00',1),(4,'Maaya',2,'2018-11-11 10:00:00',5);
 /*!40000 ALTER TABLE `Event` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -75,7 +75,7 @@ CREATE TABLE `Incharge` (
 
 LOCK TABLES `Incharge` WRITE;
 /*!40000 ALTER TABLE `Incharge` DISABLE KEYS */;
-INSERT INTO `Incharge` VALUES (1,'ABC',123),(2,'ABCDE',141423),(3,'ASda',17823),(4,'ATW',111423),(5,'PWE',5163);
+INSERT INTO `Incharge` VALUES (1,'Sam',9732712213),(2,'Sarah',1414231123),(3,'John',1782323456),(4,'Alice',1119876423),(5,'Alex',5109327663);
 /*!40000 ALTER TABLE `Incharge` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -123,7 +123,7 @@ CREATE TABLE `Speaker` (
 
 LOCK TABLES `Speaker` WRITE;
 /*!40000 ALTER TABLE `Speaker` DISABLE KEYS */;
-INSERT INTO `Speaker` VALUES (1,'QWERTY'),(2,'QWQWRTY'),(3,'QASDY'),(4,'QWRQWRY'),(5,'QWqrqrY'),(6,'asdasdTY'),(7,'QhyjTY'),(8,'cmancmY');
+INSERT INTO `Speaker` VALUES (1,'Dr. Shyam'),(2,'Mr. Rohan'),(3,'Dr. Paul'),(4,'Mrs. Walker'),(5,'Dr. Shetty'),(6,'Mr. Chetan'),(7,'Mrs. Amanda'),(8,'Mr. Ramesh');
 /*!40000 ALTER TABLE `Speaker` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -178,7 +178,7 @@ CREATE TABLE `Talk` (
 
 LOCK TABLES `Talk` WRITE;
 /*!40000 ALTER TABLE `Talk` DISABLE KEYS */;
-INSERT INTO `Talk` VALUES (1,1,1,'2018-10-11 10:06:59','Talk 1'),(2,1,2,'2018-10-11 10:06:59','Talk 2'),(3,1,3,'2018-10-11 10:06:59','Talk 3'),(4,2,4,'2018-10-11 10:06:59','Talk 4'),(5,2,5,'2018-10-11 10:06:59','Talk 5'),(6,2,6,'2018-10-11 10:06:59','Talk 6'),(7,3,7,'2018-10-11 10:06:59','Talk 7'),(8,3,8,'2018-10-11 10:06:59','Talk 8'),(9,3,8,'2018-10-11 10:06:59','Talk 9'),(10,4,2,'2018-10-11 10:06:59','Talk 10'),(11,4,1,'2018-10-11 10:06:59','Talk 11 ');
+INSERT INTO `Talk` VALUES (1,1,1,'2019-01-22 10:00:00','Networking'),(2,1,2,'2019-01-22 10:00:00','AI'),(3,1,3,'2019-01-22 10:00:00','Data Structures'),(4,2,4,'2018-10-30 08:30:00','Software Testing'),(5,2,5,'2018-10-30 08:30:00','Data analytics'),(6,2,6,'2018-10-30 08:30:00','Embedded systems'),(7,3,7,'2019-02-15 09:00:00','Data Security'),(8,3,2,'2019-02-15 09:00:00','Android'),(9,3,5,'2019-02-15 09:00:00','ML'),(10,4,2,'2018-10-11 10:06:59','Web dev'),(11,4,1,'2018-11-11 10:00:00','Java');
 /*!40000 ALTER TABLE `Talk` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
