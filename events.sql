@@ -49,9 +49,12 @@ INSERT INTO Incharge values(1,'Sam',9732712213),(2,'Sarah',1414231123),(3,'John'
 
 INSERT INTO Location values(1,'Seminar Hall 1'),(2,'Seminar Hall 2'),(3,'Room 001'),(4,'Room 002'),(5,'Room 003');
 
-INSERT INTO Speaker values(1,'Dr. Shyam'),(2,'Mr. Rohan'),(3,'Dr. Paul'),(4,'Mrs. Walker'),(5,'Dr. Shetty'),(6,'Mr. Chetan'),(7,'Mrs. Amanda'),(8,'Mr. Ramesh');
+INSERT INTO Speaker values(1,'Dr. Manikandan J '),(2,'Mrs. Divya Aggarwal '),(3,'Dr. Chintan Shah'),(4,'Mr.  Sunil Bhutada '),(5,'Dr. Shetty'),(6,'Mr. Chetan'),(7,'Mrs. Amanda'),(8,'Mr. Ramesh');
 
 INSERT INTO Sponsor values(1,'TechSpecs','Platinum'),(2,'JetWorks','Silver'),(3.'Horizon','Gold');
 
-INSERT INTO Event values(INSERT INTO `Event` VALUES (1,'TedX',3,'2019-01-22 10:00:00',2),(2,'Ingenius',1,'2018-10-30 08:30:00',4),(3,'Kalpana',1,'2019-02-15 09:00:00',1),(4,'Maaya',2,'2018-11-11 10:00:00',5);
+INSERT INTO Event values(INSERT INTO `Event` VALUES (1,'Computer Vision and the Internet (VisionNet'18)',3,'2019-01-22 10:00:00',2),(2,'Natural Language Processing (NLP'18)',1,'2018-10-30 08:30:00',4),(3,'Artificial Intelligence',1,'2019-02-15 09:00:00',1),(4,'Machine Learning/Data Engineering',2,'2018-11-11 10:00:00',5);
 
+INSERT INTO Talk values(1,1,3,'2019-01-22 10:00:00','Activation Function Optimisations for Capsule Networks'),(2,1,1,'2019-01-22 10:20:00','Crowd counting and Density Estimation using Multicolumn Discriminator in GAN'),(3,1,4,'2019-01-22 11:00:00',' Semantic Deep Image Inpainting'),(4,1,2,'2019-01-22 12:00:00','Enhanced Deep Image Super-Resolution'),
+(5,2,1,'2018-10-30 08:30:00','Sentiment Analysis on Interview Transcripts'),(6,2,3,'2018-10-30 08:50:00',' Automatic Parallel Corpus Creation for Hindi-English News Translation Task'),(7,2,2,'2018-10-30 09:30:00',' Laughter Synthesis using Mass-spring Model and Excitation Source Characteristics'),(8,2,5,'2018-10-30 10:30:00','PESUBot: An Empathetic Goal Oriented Chatbot'),
+ (9,3,7,'2019-02-15 09:00:00',' Solving Multi-Objective Optimization Problems using Differential Evolution Algorithm with Different Population Initialization Techniques'),(10,3,6,'2019-02-15 10:00:00','Cardiac Arrhythmia Detection from Single-lead ECG using CNN and LSTM assisted by Oversampling'),(11,3,5,'2019-02-15 11:00:00',' Folding Paper Currency Recognition and Research Based on Convolution Neural Network'),(12,4,1,'2018-11-11 10:00:00','Diabetes Prediction Model Using Cloud Analytics'),(13,4,5,'2018-11-11 11:00:00','Post-Surgical Survival forecasting of breast cancer patient: a novel approach'),(14,4,1,'2018-11-11 12:00:00','An Automatic Chord Progression Generator Based On Reinforcement Learning');
