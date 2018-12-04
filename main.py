@@ -283,10 +283,10 @@ class AddTalkPage(Page):
         optionLabel = tk.Label(self,text="Select Event", **lblConfig)
         optionLabel.grid(row = 6, column = 8)
 
-        var = tk.StringVar(self)
-        var.set(options[0])
+        self.var = tk.StringVar(self)
+        self.var.set(options[0])
         
-        option = tk.OptionMenu(self, var, *options)
+        option = tk.OptionMenu(self, self.var, *options)
         option.grid(row = 6, column = 10)
         option.config(**optionsConfig)
 
@@ -302,7 +302,10 @@ class AddTalkPage(Page):
         db.query(query)
         r = db.store_result()
         spkrid = int(r.fetch_row(how=1)[0]['SpeakerId'])
-        self.event = 1
+        
+        query = 'select EventId from Event where Name="'+self.var.get()+'"'
+        db.query(query)
+        self.event = int(db.store_result().fetch_row(how=1)[0]['EventId'])
         query = 'insert into Talk(Title,StartTime,SpeakerId,EventId) values('
         query += '"'+self.title.get()+'",'
         query += '"'+self.time.get()+'",'
@@ -311,27 +314,67 @@ class AddTalkPage(Page):
         query += ');'
         db.query(query)
 
-        tk.messagebox.showinfo("Talk added!")
+        tk.messagebox.showinfo(title="Talk added!", message="Added "+self.title.get()+" to database.")
 
 class DeleteTalkPage(Page):
     def __init__(self, controller, *args, **kwargs):
         self.controller = controller
-        Page.__init__(self, *args, logo='pack', **kwargs)
-
+        Page.__init__(self, *args, logo='grid', **kwargs)
         
+        eventLabel = tk.Label(self,text="Choose the event", **lblConfig)
+        eventLabel.grid(row = 3, column = 8)
+        
+        self.eventsList = [  
+            'Computer Vision and the Internet (VisionNet-18)', 
+            'Natural Language Processing (NLP-18)' , 
+            'Artificial Intelligence',  
+            'Machine Learning/Data Engineering'
+        ]
 
-        SubmitButton = tk.Button(self,text='Login', **btnConfig, command=self.login)
-        SubmitButton.pack()
-        backButton = tk.Button(self, text="Back", command = lambda :self.controller.showFrame('MenuPage'))
-        backButton.pack()
+        eventVar = tk.StringVar(self)
+        eventVar.set(self.eventsList[0])
+        
+        eventOptions = tk.OptionMenu(self, eventVar, *self.eventsList, command=self.updateChoice)
+        eventOptions.grid(row = 3, column = 10)
+        eventOptions.config(**optionsConfig)
 
-    def login(self):
-        if(self.Username.get()=='Admin' and self.Password.get()=='Pass'):
-            self.controller.showFrame('AdminPage')
-        else:
-            pass
-            tk.messagebox.showinfo("Incorrect Login!", "The username and password you entered are incorrect!")
+        talkLabel = tk.Label(self,text="Pick Talk", **lblConfig)
+        talkLabel.grid(row = 4, column = 8)
 
+        self.talksList = ['']
+
+        self.talksVar = tk.StringVar(self)
+        self.talksVar.set(self.talksList[0])
+        
+        self.talksOptions = tk.OptionMenu(self, self.talksVar, *self.talksList)
+        self.talksOptions.grid(row = 4, column = 10)
+        self.talksOptions.config(**optionsConfig)
+        
+        SubmitButton = tk.Button(self,text='Delete selected talk', **btnConfig, command=self.deleteTalk)
+        SubmitButton.grid(row = 7, column = 8)
+        backButton = tk.Button(self, text="Back", **btnConfig, command = lambda :self.controller.showFrame('AdminPage'))
+        backButton.grid(row = 7, column = 10)
+
+    def updateChoice(self,event):
+        query = 'select title from Talk T, Event E where E.EventId = T.EventId and Name = "' + event + '"'
+        db.query(query)
+        r = db.store_result()
+        self.talksList = []
+        for row in list(r.fetch_row(maxrows=0,how=0)):
+            self.talksList.append(row[0].decode('utf'))
+
+        self.talksVar.set(self.talksList[0])
+        self.talksOptions['menu'].delete(0,"end")
+        for talky in self.talksList:
+            self.talksOptions['menu'].add_command(label=talky, 
+                             command=lambda value=talky: self.talksVar.set(value))
+
+
+    def deleteTalk(self):
+        query = 'delete from Talk where title= "'+self.talksVar.get()+'";'
+        db.query(query)
+        tk.messagebox.showinfo(title='Deleted!',message='Deleted talk titled '+self.talksVar.get())
+        self.controller.showFrame('AdminPage')
 
 class MainView(tk.Frame):
     def __init__(self, *args, **kwargs):
