@@ -6,6 +6,7 @@ from src.DatabaseConnector import db
 class AddTalkPage(Page):
     def __init__(self, controller, *args, **kwargs):
         self.controller = controller
+        self.cursor = db.cursor(dictionary=True)
         Page.__init__(self, *args, logo='grid', **kwargs)
         
         titleLabel = Label(self,text="Talk Title", **labelStyle)
@@ -44,22 +45,17 @@ class AddTalkPage(Page):
         backButton.grid(row = 7, column = 10)
 
     def addTalk(self):
-        query = 'insert into Speaker(SpeakerName) values("'+self.spkr.get()+'");'
-        db.query(query)
-        query = 'select SpeakerId from Speaker where SpeakerName="'+self.spkr.get()+'";'
-        db.query(query)
-        r = db.store_result()
-        spkrid = int(r.fetch_row(how=1)[0]['SpeakerId'])
+        query = 'insert into Speaker(SpeakerName) values(%s);'
+        self.cursor.execute(query,(self.spkr.get(),))
+        query = 'select SpeakerId from Speaker where SpeakerName=%s;'
+        self.cursor.execute(query,(self.spkr.get(),))
+
+        spkrid = self.cursor.fetchone()['SpeakerId']
         
-        query = 'select EventId from Event where Name="'+self.var.get()+'"'
-        db.query(query)
-        self.event = int(db.store_result().fetch_row(how=1)[0]['EventId'])
-        query = 'insert into Talk(Title,StartTime,SpeakerId,EventId) values('
-        query += '"'+self.title.get()+'",'
-        query += '"'+self.time.get()+'",'
-        query += str(spkrid)+','
-        query += str(self.event)
-        query += ');'
-        db.query(query)
+        query = 'select EventId from Event where Name=%s'
+        self.cursor.execute(query,(self.var.get(),))
+        self.event = self.cursor.fetchone()['EventId']
+        query = 'insert into Talk(Title,StartTime,SpeakerId,EventId) values(%s,%s,%s,%s);'
+        self.cursor.execute(query,(self.title.get(), self.time.get(), spkrid, self.event))
 
         messagebox.showinfo(title="Talk added!", message="Added "+self.title.get()+" to database.")

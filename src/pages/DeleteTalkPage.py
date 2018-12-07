@@ -6,6 +6,7 @@ from src.DatabaseConnector import db
 class DeleteTalkPage(Page):
     def __init__(self, controller, *args, **kwargs):
         self.controller = controller
+        self.cursor = db.cursor(dictionary=True)
         Page.__init__(self, *args, logo='grid', **kwargs)
         
         eventLabel = Label(self,text="Choose the event", **labelStyle)
@@ -44,11 +45,10 @@ class DeleteTalkPage(Page):
 
     def updateChoice(self,event):
         query = 'select title from Talk T, Event E where E.EventId = T.EventId and Name = "' + event + '"'
-        db.query(query)
-        r = db.store_result()
+        self.cursor.execute(query)
         self.talksList = []
-        for row in list(r.fetch_row(maxrows=0,how=0)):
-            self.talksList.append(row[0].decode('utf'))
+        for row in self.cursor.fetchall():
+            self.talksList.append(row['title'])
 
         self.talksVar.set(self.talksList[0])
         self.talksOptions['menu'].delete(0,"end")
@@ -58,7 +58,7 @@ class DeleteTalkPage(Page):
 
 
     def deleteTalk(self):
-        query = 'delete from Talk where title= "'+self.talksVar.get()+'";'
-        db.query(query)
+        query = 'delete from Talk where title=%s;'
+        self.cursor.execute(query,(self.talksVar.get(),))
         messagebox.showinfo(title='Deleted!',message='Deleted talk titled '+self.talksVar.get())
         self.controller.showFrame('AdminPage')

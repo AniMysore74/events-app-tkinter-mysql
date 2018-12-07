@@ -1,4 +1,5 @@
-import _mysql
+#import _mysql
+import mysql.connector
 
 # connect to db
-db = _mysql.connect(host="localhost",user="root",passwd="ArkAngel",db="EVENTS")
+db = mysql.connector.connect(user='root', password='ArkAngel', database='Conference')

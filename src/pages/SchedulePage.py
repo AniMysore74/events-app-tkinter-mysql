@@ -6,15 +6,11 @@ from src.DatabaseConnector import db
 class SchedulePage(Page):
     def __init__(self, controller, *args, **kwargs):
         self.controller = controller
+        self.cursor = db.cursor(dictionary=True)
         Page.__init__(self, *args, logo='grid', **kwargs)
-
+        
         Frame(master=self, width=1024, height=30, bg="white").grid(column=0, columnspan=20)
-
-        query = 'select * from Event NATURAL JOIN Location'
-        db.query(query)
-        r = db.store_result()
-        events = list(r.fetch_row(maxrows=0,how=1))
-
+        
         header = []
         startcol = 9
         header.append(Label(self, background="white", text="Seminar Name",font=("-*-Times-Bold-R-*--*-250-*-*-*-*-ISO8859-1", 20)))
@@ -30,17 +26,20 @@ class SchedulePage(Page):
         placeLbl = []
         timeLbl = []
         btns = []
-        for i,event in enumerate(events):
+
+        query = 'select * from Event NATURAL JOIN Location'
+        self.cursor.execute(query)
+        
+        for i,event in enumerate(self.cursor.fetchall()):
             eventLbl.append(Label(self, text=event['Name'], **labelStyle))
             eventLbl[i].grid(sticky="W", column=startcol, row=i+10)
             placeLbl.append(Label(self, text=event['PlaceName'],**labelStyle))
             placeLbl[i].grid(sticky="W", column=(startcol+1), row=i+10)
-            timeLbl.append(Label(self, text=event['StartTime'], **labelStyle))
+            timeLbl.append(Label(self, text=event['StartTime'].ctime(), **labelStyle))
             timeLbl[i].grid(sticky="W", column=(startcol+2), row=i+10)
             e = event['EventId']
             btns.append(Button(self, background="white", text="Info", command=lambda p=e: self.go_to_page(p) ))
-            btns[i].grid(column=(startcol+3), row=i+10)
-        
+            btns[i].grid(column=(startcol+3), row=i+10)        
 
     def go_to_page(self, EventId): 
         self.controller.EventId = EventId

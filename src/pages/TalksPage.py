@@ -6,6 +6,7 @@ from src.DatabaseConnector import db
 class TalksPage(Page):
     def __init__(self, controller, *args, **kwargs):
         self.controller = controller
+        self.cursor = db.cursor(dictionary=True)
         Page.__init__(self, *args, logo='grid',**kwargs)
         self.cleared = True
         Frame(master=self, width=1024, height=30, bg="white").grid(column=0, columnspan=20)
@@ -26,27 +27,24 @@ class TalksPage(Page):
     def putData(self):
         self.clear()
         self.cleared = False
-        query = 'select * from Location NATURAL JOIN Event NATURAL JOIN Incharge where EventId = ' + self.controller.EventId 
-        db.query(query)
-        r = db.store_result()
-        event = list(r.fetch_row(maxrows=0,how=1))
-        self.eventNamelbl = Label(self,font=("Arial", 20), background="white", text=('Session: '+event[0]['Name'].decode()+''))
+        query = "select * from Location NATURAL JOIN Event NATURAL JOIN Incharge where EventId = %s"
+        self.cursor.execute(query,(self.controller.EventId,))
+        event = self.cursor.fetchone()
+        self.eventNamelbl = Label(self,font=("Arial", 20), background="white", text=('Session: '+event['Name']+''))
         self.eventNamelbl.grid(column = 4, row = 2, pady=(15,0), columnspan=10)
 
-        self.inchargeName = Label(self,font=('Arial',15), background="white", text=('Incharge: '+event[0]['InchargeName'].decode()+'')) 
+        self.inchargeName = Label(self,font=('Arial',15), background="white", text=('Incharge: '+event['InchargeName']+'')) 
         self.inchargeName.grid(column=4, row=3, columnspan=10)
 
-        self.inchargeContact = Label(self,font=('Arial',15), background="white", text=('Contact No: '+event[0]['ContactNo']+'')) 
+        self.inchargeContact = Label(self,font=('Arial',15), background="white", text=('Contact No: '+str(event['ContactNo'])+'')) 
         self.inchargeContact.grid(column=4, row=4, columnspan=10)
 
-        self.place = Label(self,font=('Arial',15), background="white", text=('Venue : '+event[0]['PlaceName'].decode()+'')) 
+        self.place = Label(self,font=('Arial',15), background="white", text=('Venue : '+event['PlaceName']+'')) 
         self.place.grid(column=4, row=5,  pady=(0,20), columnspan=10)
 
-        query = 'select * from Speaker NATURAL JOIN Talk where EventId = ' + self.controller.EventId 
-        db.query(query)
-        r = db.store_result()
-        talks = list(r.fetch_row(maxrows=0,how=1))
-
+        query = "select * from Speaker NATURAL JOIN Talk where EventId = %s"
+        self.cursor.execute(query,(self.controller.EventId,))
+        
         self.header = []
         startcol = 8
         self.header.append(Label(self, text="Talk Title", **headerStyle))
@@ -59,11 +57,11 @@ class TalksPage(Page):
         self.talkLbl = []
         self.spkrLbl = []
         self.timeLbl = []
-        for i,talk in enumerate(talks):
-            self.talkLbl.append(Label(self, text=' '+talk['Title'].decode()+' ', **labelStyle))
+        for i,talk in enumerate(self.cursor.fetchall()):
+            self.talkLbl.append(Label(self, text=' '+talk['Title']+' ', **labelStyle))
             self.talkLbl[i].grid(column=startcol, row=i+8,
              sticky='W')
-            self.spkrLbl.append(Label(self, text=' '+talk['SpeakerName'].decode()+' ', **labelStyle))
+            self.spkrLbl.append(Label(self, text=' '+talk['SpeakerName']+' ', **labelStyle))
             self.spkrLbl[i].grid(column=startcol+1, row=i+8, sticky='W')
-            self.timeLbl.append(Label(self, text=' '+talk['StartTime']+' ', **labelStyle))
+            self.timeLbl.append(Label(self, text=' '+talk['StartTime'].ctime()+' ', **labelStyle))
             self.timeLbl[i].grid(column=startcol+2, row=i+8, sticky='W')

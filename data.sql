@@ -8,7 +8,7 @@ USE Conference;
 CREATE TABLE Incharge (
     InchargeId INT PRIMARY KEY,
     InchargeName VARCHAR(30) NOT NULL,
-    ContactNo INT NOT NULL
+    ContactNo BIGINT NOT NULL
 );
 
 CREATE TABLE Location ( 
@@ -23,7 +23,7 @@ CREATE TABLE Sponsor (
 );
 
 CREATE TABLE Speaker ( 
-    SpeakerId INT PRIMARY KEY,
+    SpeakerId INT PRIMARY KEY AUTO_INCREMENT,
     SpeakerName VARCHAR(30) NOT NULL
 );
 
@@ -38,7 +38,7 @@ CREATE TABLE Event (
 );
 
 CREATE TABLE Talk (
-    TalkId INT PRIMARY KEY,
+    TalkId INT PRIMARY KEY AUTO_INCREMENT,
     EventId INT NOT NULL,
     SpeakerId INT NOT NULL,
     StartTime DATETIME NOT NULL,
