@@ -2,6 +2,8 @@
 
 An example conference schedule app built using the tkinter module in python. Uses the mysql-connector driver for python.
 
+![Screenshot](docs/screen.png)
+
 ## Prerequisites
 
 1. Python 3
